@@ -18,9 +18,12 @@
     ]
   },
   "dependencies": {
+    "firebase": "^10.12.2",
     "lint-staged": "^15.2.5",
     "pinia": "^2.1.7",
-    "vue": "^3.4.21"
+    "vca-firebase": "^0.2.0",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.33.0",
@@ -29,11 +32,14 @@
     "@vue/compiler-sfc": "^3.0.5",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
+    "autoprefixer": "^10.4.19",
     "eslint": "^7.27.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.10.0",
     "husky": "^8.0.3",
+    "postcss": "^8.4.38",
     "prettier": "^2.3.0",
+    "tailwindcss": "^3.4.3",
     "typescript": "^4.3.2",
     "vite": "^2.3.4",
     "vue-tsc": "^0.0.24"
