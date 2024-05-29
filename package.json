@@ -47,5 +47,11 @@
   "resolutions": {
     "@typescript-eslint/eslint-plugin": "6.x",
     "@typescript-eslint/parser": "6.x"
+  },
+  "postcss": {
+    "plugins": {
+      "tailwindcss": "./tailwind.config.js",
+      "autoprefixer": {}
+    }
   }
 }
