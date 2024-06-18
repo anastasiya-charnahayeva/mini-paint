@@ -1,30 +1,27 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <Header v-if="user"></Header>
+    <RouterView />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<script setup lang="ts">
+  import { storeToRefs } from "pinia";
+  import { onMounted } from "vue";
+  import { useAuthStore } from "./stores/modules/useAuth";
+  import { onAuthStateChanged } from "firebase/auth";
+  import fbAuth from "./firebase/index";
+  import Header from "./components/Header.vue";
+
+  const authStore = useAuthStore();
+  const { setCurrentUser } = authStore;
+  const { user } = storeToRefs(authStore);
+
+  onMounted(() => {
+    onAuthStateChanged(fbAuth, (user) => {
+      setCurrentUser(user);
+    });
+  });
+</script>

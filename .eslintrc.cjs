@@ -25,5 +25,6 @@ module.exports = {
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/no-unused-vars": ["off", { argsIgnorePattern: "^_" }],
       "prettier/prettier": ["error", {}, { usePrettierrc: true }],
+      '@typescript-eslint/no-var-requires': 'off'
     },
   };
