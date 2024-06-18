@@ -1,8 +1,8 @@
 <template>
-  <section class="bg-gray-400">
+  <section class="bg-gray-900">
     <div class="flex items-center justify-center h-screen">
       <div
-        class="rounded-lg shadow-lg w-full max-w-md bg-gray-800 border-gray-700"
+        class="rounded-lg shadow-lg w-full max-w-md bg-gray-800 border-gray-400"
       >
         <div class="p-6 text-white">
           <h1 class="text-xl font-bold md:text-2xl py-2 mb-2">
@@ -66,6 +66,7 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from "pinia";
   import { useAuthStore } from "../stores/modules/useAuth";
   import { reactive, ref } from "vue";
   import { useRouter } from "vue-router";
@@ -79,7 +80,9 @@
   const alert_variant = ref<string>("bg-blue-500");
   const alert_msg = ref<string>("Please wait! We are logging you in");
 
-  const auth = useAuthStore();
+  const authStore = useAuthStore();
+  const { user } = storeToRefs(authStore);
+  const { signInUser } = authStore;
   const router = useRouter();
 
   async function login() {
@@ -88,7 +91,7 @@
     alert_msg.value = "Please wait! We are logging you in.";
 
     try {
-      await auth.signInUser(form);
+      await signInUser(form);
     } catch (error) {
       show_alert.value = true;
       alert_variant.value = "bg-red-500";
@@ -97,6 +100,6 @@
     }
     alert_variant.value = "bg-green-500";
     alert_msg.value = "Success! You are now logged in.";
-    router.push({ path: "/home" });
+    if (user.value) router.push({ path: "/home" });
   }
 </script>

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { auth } from "../firebase.config";
+import { auth } from "../../firebase.config.js";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -15,6 +15,7 @@ export const useAuthStore = defineStore(
     const user = ref();
 
     async function createUser(values: { email: string; password: string }) {
+      console.log("here we are. call registration");
       const auth = getAuth();
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -45,11 +46,16 @@ export const useAuthStore = defineStore(
       localStorage.removeItem("uid");
     }
 
+    async function setCurrentUser(currentUser) {
+      user.value = currentUser;
+    }
+
     return {
       user,
       createUser,
       signInUser,
       signOutUser,
+      setCurrentUser,
     };
   },
   {

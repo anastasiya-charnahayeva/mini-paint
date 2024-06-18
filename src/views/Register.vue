@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-gray-400">
+  <section class="bg-gray-900">
     <div class="flex items-center justify-center h-screen">
       <div
         class="rounded-lg shadow-lg w-full max-w-md bg-gray-800 border-gray-700"
@@ -79,9 +79,11 @@
   </section>
 </template>
 <script setup lang="ts">
+  import { storeToRefs } from "pinia";
   import { useAuthStore } from "../stores/modules/useAuth";
   import { reactive, ref } from "vue";
   import { useRouter } from "vue-router";
+
   const form = reactive({
     name: "",
     email: "",
@@ -92,7 +94,9 @@
   const alert_variant = ref<string>("bg-blue-500");
   const alert_msg = ref<string>("Please wait! Your account is being created.");
 
-  const auth = useAuthStore();
+  const authStore = useAuthStore();
+  const { user } = storeToRefs(authStore);
+  const { createUser } = authStore;
   const router = useRouter();
 
   async function register() {
@@ -101,7 +105,7 @@
     alert_msg.value = "Please wait! Your account is being created.";
 
     try {
-      await auth.createUser(form);
+      await createUser(form);
     } catch (error) {
       show_alert.value = true;
       alert_variant.value = "bg-red-500";
@@ -110,6 +114,6 @@
     }
     alert_variant.value = "bg-green-500";
     alert_msg.value = "Success! Your account is created.";
-    router.push({ path: "/home" });
+    if (user.value) router.push({ path: "/home" });
   }
 </script>
