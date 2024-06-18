@@ -15,7 +15,6 @@ export const useAuthStore = defineStore(
     const user = ref();
 
     async function createUser(values: { email: string; password: string }) {
-      console.log("here we are. call registration");
       const auth = getAuth();
       const userCredential = await createUserWithEmailAndPassword(
         auth,

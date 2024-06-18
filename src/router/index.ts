@@ -4,6 +4,9 @@ import Paint from "../views/Paint.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 
+import { onAuthStateChanged } from "firebase/auth";
+import fbAuth from "../firebase/index";
+
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
@@ -44,18 +47,22 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+const user = () => {
+  return new Promise((resolve) => {
+    onAuthStateChanged(fbAuth, (currentUser) => {
+      resolve(currentUser);
+    });
+  });
+};
+
+router.beforeEach(async (to, from, next) => {
+  const res = await user();
+  const allowedPaths = ["/login", "/register"];
   if (to.matched.some((route) => route.meta.isAuth)) {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      next("/login");
-    }
-    const allowedPaths = ["/login", "/register"];
-    if (token && allowedPaths.includes(to.path)) {
-      next("/");
-    }
+    !res ? next("/login") : next();
+    ("/");
   } else {
-    next();
+    res && allowedPaths.includes(to.path) ? next("/") : next();
   }
 });
 

@@ -100,6 +100,6 @@
     }
     alert_variant.value = "bg-green-500";
     alert_msg.value = "Success! You are now logged in.";
-    if (user.value) router.push({ path: "/home" });
+    if (user.value) router.push({ path: "/" });
   }
 </script>

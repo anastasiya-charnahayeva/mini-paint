@@ -114,6 +114,6 @@
     }
     alert_variant.value = "bg-green-500";
     alert_msg.value = "Success! Your account is created.";
-    if (user.value) router.push({ path: "/home" });
+    if (user.value) router.push({ path: "/" });
   }
 </script>
