@@ -23,6 +23,7 @@
     "pinia": "^2.1.7",
     "vca-firebase": "^0.2.0",
     "vue": "^3.4.21",
+    "vue-colour-picker": "^0.0.5",
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
