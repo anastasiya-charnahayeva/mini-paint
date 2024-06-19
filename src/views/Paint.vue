@@ -1,8 +1,27 @@
 <template>
-  <div>
+  <div class="my-8 container m-auto text-xl">
     <h1 class="text-xl font-bold text-center">Paint</h1>
-
-    <div id="container">
+    <div class="flex justify-between">
+      <div class="m-2">
+        <label for="hs-color-input" class="block text-sm font-medium mb-2"
+          >Color picker</label
+        >
+        <input
+          id="hs-color-input"
+          v-model="state.color"
+          type="color"
+          class="p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+          title="Choose your color"
+        />
+      </div>
+      <div class="m-2">
+        <label for="hs-color-input" class="block text-sm font-medium mb-2"
+          >Draw size</label
+        >
+        <input v-model="state.size" type="range" min="1" max="50" step="1" />
+      </div>
+    </div>
+    <div>
       <div class="buttons mx-auto flex justify-between">
         <button type="primary" @click="changeType('huabi')">Draw</button>
         <button type="success" @click="changeType('rect')">Rectangle</button>
@@ -13,9 +32,6 @@
         >
           Circle
         </button>
-        <ColourPicker v-model="state.color" picker="compact"
-          >Color
-        </ColourPicker>
         <button @click="revert">Revert</button>
         <button @click="recovery">Recover</button>
         <button @click="clear">Clear</button>
@@ -23,6 +39,7 @@
       </div>
       <canvas
         id="canvas"
+        class="w-full"
         width="800"
         height="400"
         @mousedown="canvasDown"
@@ -36,7 +53,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { ColourPicker } from "vue-colour-picker";
   import { onMounted, reactive } from "vue";
 
   interface IState {
@@ -48,6 +64,7 @@
     beginY: number;
     color: string;
     imageData: ImageData | null;
+    size: number;
   }
 
   const state = reactive<IState>({
@@ -57,6 +74,7 @@
     beginY: 0,
     color: "#000",
     imageData: null,
+    size: 1,
   });
 
   let canvas: HTMLCanvasElement;
@@ -107,7 +125,7 @@
   };
   const huabiFn = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
     ctx.beginPath();
-    ctx.arc(x, y, 5, 0, 2 * Math.PI);
+    ctx.arc(x, y, state.size, 0, 2 * Math.PI);
     ctx.fillStyle = state.color;
     ctx.fill();
     ctx.closePath();
@@ -120,6 +138,7 @@
     ctx.beginPath();
     ctx.strokeStyle = state.color;
     ctx.rect(beginX, beginY, x - beginX, y - beginY);
+    ctx.lineWidth = state.size;
     ctx.stroke();
     ctx.closePath();
   };
@@ -139,6 +158,7 @@
       0,
       2 * Math.PI,
     );
+    ctx.lineWidth = state.size;
     ctx.stroke();
     ctx.closePath();
   };
