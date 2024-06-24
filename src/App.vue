@@ -12,7 +12,7 @@
   import { onMounted } from "vue";
   import { useAuthStore } from "./stores/modules/useAuth";
   import { onAuthStateChanged } from "firebase/auth";
-  import fbAuth from "./firebase/index";
+  import { fbAuth } from "./firebase/index";
   import Header from "./components/Header.vue";
 
   const authStore = useAuthStore();

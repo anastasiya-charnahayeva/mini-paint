@@ -5,7 +5,7 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 
 import { onAuthStateChanged } from "firebase/auth";
-import fbAuth from "../firebase/index";
+import { fbAuth } from "../firebase/index";
 
 const routes: RouteRecordRaw[] = [
   {
