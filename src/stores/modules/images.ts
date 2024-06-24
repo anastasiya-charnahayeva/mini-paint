@@ -7,7 +7,8 @@ import { addDoc, getDocs, collection } from "firebase/firestore";
 export const useImagesStore = defineStore(
   "images",
   () => {
-    const images = ref();
+    const images = ref([]);
+    const chosenUser = ref();
 
     const authStore = useAuthStore();
     const { user } = authStore;
@@ -25,7 +26,10 @@ export const useImagesStore = defineStore(
     }
 
     async function getImages() {
-      const userCredential = await getDocs(collection(store, "images"));
+      const querySnapshot = await getDocs(collection(store, "images"));
+      querySnapshot.forEach((doc) => {
+        images.value = new Set(images.value.push(doc.data()));
+      });
     }
 
     // async function filterByUser() {
@@ -37,6 +41,7 @@ export const useImagesStore = defineStore(
       addImage,
       getImages,
       //   filterByUser,
+      chosenUser,
     };
   },
   {
