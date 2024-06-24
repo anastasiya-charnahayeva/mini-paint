@@ -54,7 +54,6 @@
 
 <script lang="ts" setup>
   import { onMounted, reactive } from "vue";
-  import { collection, addDoc } from "firebase/firestore";
   import { store } from "../firebase/index";
   import { useImagesStore } from "../stores/modules/images";
 
