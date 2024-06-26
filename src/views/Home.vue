@@ -22,16 +22,18 @@
     <div
       v-for="image in images"
       :key="image.uid"
-      class="b-2 my-8 m-auto text-xl"
+      class="b-2 my-8 m-auto text-xl w-full"
     >
-      <label class="h-full w-full text-[11px] font-normal">
+      <label class="h-full w-full text-sm font-bold">
         {{ image.email }}
       </label>
-      <img
-        class="max-w-full rounded-lg border border-blue-gray-600"
-        :src="image.url"
-        :alt="key"
-      />
+      <div class="flex justify-center">
+        <img
+          class="rounded-lg border border-blue-gray-600"
+          :src="image.url"
+          :alt="key"
+        />
+      </div>
     </div>
   </div>
 </template>

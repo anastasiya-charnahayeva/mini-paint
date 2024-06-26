@@ -36,9 +36,12 @@ export const useImagesStore = defineStore(
     }
 
     function updateOwners() {
-      allImgs.value.forEach((image) =>
-        imgsOwners.value.push({ userId: image.userId, email: image.email }),
-      );
+      allImgs.value.forEach((image) => {
+        const data = { userId: image.userId, email: image.email };
+        if (!imgsOwners.value.some((el) => el.email === data.email)) {
+          imgsOwners.value.push(data);
+        }
+      });
     }
 
     function getImg() {
