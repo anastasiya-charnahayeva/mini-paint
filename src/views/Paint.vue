@@ -130,13 +130,14 @@
     state.beginX = e.pageX - canvas.offsetLeft;
     state.beginY = e.pageY - canvas.offsetTop;
   };
+
   const canvasMove = (e: MouseEvent) => {
     if (!state.isDraw) return;
     const x = e.pageX - canvas.offsetLeft;
     const y = e.pageY - canvas.offsetTop;
     switch (state.type) {
       case "huabi":
-        huabiFn(ctx, x, y);
+        lineDrawing(ctx, x, y);
         break;
       case "rect":
         rectFn(ctx, x, y);
@@ -148,6 +149,8 @@
   };
   const canvasUp = (type: string) => {
     if (type === "up") {
+      state.beginX = canvas.offsetLeft;
+      state.beginY = canvas.offsetTop;
       step++;
       if (step < imageDataArr.length) {
         imageDataArr.length = step;
@@ -158,12 +161,24 @@
 
     state.isDraw = false;
   };
-  const huabiFn = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
+
+  let hue = 0;
+
+  const lineDrawing = (ctx, x, y) => {
     ctx.beginPath();
-    ctx.arc(x, y, state.size, 0, 2 * Math.PI);
-    ctx.fillStyle = state.color;
-    ctx.fill();
-    ctx.closePath();
+    ctx.linejoin = "round";
+    ctx.lineCap = "round";
+    ctx.strokeStyle = state.color;
+    ctx.moveTo(state.beginX, state.beginY);
+    ctx.lineTo(x, y);
+    ctx.lineWidth = state.size;
+    ctx.stroke();
+    state.beginX = x;
+    state.beginY = y;
+    hue++;
+    if (hue >= 360) {
+      hue = 0;
+    }
   };
   const rectFn = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
     const beginX = state.beginX;
