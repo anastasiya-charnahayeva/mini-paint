@@ -164,7 +164,7 @@
 
   let hue = 0;
 
-  const lineDrawing = (ctx, x, y) => {
+  const lineDrawing = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
     ctx.beginPath();
     ctx.linejoin = "round";
     ctx.lineCap = "round";
@@ -181,8 +181,7 @@
     }
   };
   const rectFn = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
-    const beginX = state.beginX;
-    const beginY = state.beginY;
+    const { beginX, beginY } = state;
     ctx.clearRect(0, 0, 800, 400);
     state.imageData && ctx.putImageData(state.imageData, 0, 0, 0, 0, 800, 400);
     ctx.beginPath();
@@ -193,8 +192,7 @@
     ctx.closePath();
   };
   const arcFn = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
-    const beginX = state.beginX;
-    const beginY = state.beginY;
+    const { beginX, beginY } = state;
     state.isDraw && ctx.clearRect(0, 0, 800, 400);
     state.imageData && ctx.putImageData(state.imageData, 0, 0, 0, 0, 800, 400);
     ctx.beginPath();
