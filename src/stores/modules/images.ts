@@ -7,7 +7,9 @@ import { addDoc, getDocs, collection } from "firebase/firestore";
 export const useImagesStore = defineStore(
   "images",
   () => {
-    const images = ref();
+    const allImgs = ref([]);
+    const imgsOwners = ref([]);
+    const chosenUser = ref("");
 
     const authStore = useAuthStore();
     const { user } = authStore;
@@ -17,6 +19,7 @@ export const useImagesStore = defineStore(
         const docRef = await addDoc(collection(store, "images"), {
           url: url,
           userId: user.uid,
+          email: user.email,
         });
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {
@@ -25,18 +28,42 @@ export const useImagesStore = defineStore(
     }
 
     async function getImages() {
-      const userCredential = await getDocs(collection(store, "images"));
+      const querySnapshot = await getDocs(collection(store, "images"));
+      querySnapshot.forEach((doc) => {
+        allImgs.value.push(doc.data());
+      });
+      updateOwners();
     }
 
-    // async function filterByUser() {
+    function updateOwners() {
+      allImgs.value.forEach((image) => {
+        const data = { userId: image.userId, email: image.email };
+        if (!imgsOwners.value.some((el) => el.email === data.email)) {
+          imgsOwners.value.push(data);
+        }
+      });
+    }
 
-    // }
+    function getImg() {
+      const filteredImgs = chosenUser.value
+        ? allImgs.value.filter((img) => img.email === chosenUser.value)
+        : allImgs.value;
+      return filteredImgs;
+    }
+
+    function filterByUser() {
+      if (chosenUser.value) {
+        return getImg();
+      }
+    }
 
     return {
-      images,
+      getImg,
       addImage,
       getImages,
-      //   filterByUser,
+      chosenUser,
+      imgsOwners,
+      filterByUser,
     };
   },
   {

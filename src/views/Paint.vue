@@ -22,21 +22,6 @@
       </div>
     </div>
     <div>
-      <div class="buttons mx-auto flex justify-between">
-        <button type="primary" @click="changeType('huabi')">Draw</button>
-        <button type="success" @click="changeType('rect')">Rectangle</button>
-        <button
-          type="warning"
-          style="margin-right: 10px"
-          @click="changeType('arc')"
-        >
-          Circle
-        </button>
-        <button @click="revert">Revert</button>
-        <button @click="recovery">Recover</button>
-        <button @click="clear">Clear</button>
-        <button @click="saveImg">Save</button>
-      </div>
       <canvas
         id="canvas"
         class="w-full"
@@ -48,13 +33,60 @@
         @mouseup="canvasUp('up')"
       >
       </canvas>
+      <div class="buttons text-sm mx-auto flex justify-between mt-4">
+        <button
+          class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-800 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          type="primary"
+          @click="changeType('huabi')"
+        >
+          Draw
+        </button>
+        <button
+          class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-800 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          type="success"
+          @click="changeType('rect')"
+        >
+          Rectangle
+        </button>
+        <button
+          class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-800 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          type="warning"
+          style="margin-right: 10px"
+          @click="changeType('arc')"
+        >
+          Circle
+        </button>
+        <button
+          class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-800 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          @click="revert"
+        >
+          Revert
+        </button>
+        <button
+          class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-800 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          @click="recovery"
+        >
+          Recover
+        </button>
+        <button
+          class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-800 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          @click="clear"
+        >
+          Clear
+        </button>
+        <button
+          class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-800 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          @click="saveImg"
+        >
+          Save
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
   import { onMounted, reactive } from "vue";
-  import { collection, addDoc } from "firebase/firestore";
   import { store } from "../firebase/index";
   import { useImagesStore } from "../stores/modules/images";
 
@@ -98,13 +130,14 @@
     state.beginX = e.pageX - canvas.offsetLeft;
     state.beginY = e.pageY - canvas.offsetTop;
   };
+
   const canvasMove = (e: MouseEvent) => {
     if (!state.isDraw) return;
     const x = e.pageX - canvas.offsetLeft;
     const y = e.pageY - canvas.offsetTop;
     switch (state.type) {
       case "huabi":
-        huabiFn(ctx, x, y);
+        lineDrawing(ctx, x, y);
         break;
       case "rect":
         rectFn(ctx, x, y);
@@ -116,6 +149,8 @@
   };
   const canvasUp = (type: string) => {
     if (type === "up") {
+      state.beginX = canvas.offsetLeft;
+      state.beginY = canvas.offsetTop;
       step++;
       if (step < imageDataArr.length) {
         imageDataArr.length = step;
@@ -126,16 +161,27 @@
 
     state.isDraw = false;
   };
-  const huabiFn = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
+
+  let hue = 0;
+
+  const lineDrawing = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
     ctx.beginPath();
-    ctx.arc(x, y, state.size, 0, 2 * Math.PI);
-    ctx.fillStyle = state.color;
-    ctx.fill();
-    ctx.closePath();
+    ctx.linejoin = "round";
+    ctx.lineCap = "round";
+    ctx.strokeStyle = state.color;
+    ctx.moveTo(state.beginX, state.beginY);
+    ctx.lineTo(x, y);
+    ctx.lineWidth = state.size;
+    ctx.stroke();
+    state.beginX = x;
+    state.beginY = y;
+    hue++;
+    if (hue >= 360) {
+      hue = 0;
+    }
   };
   const rectFn = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
-    const beginX = state.beginX;
-    const beginY = state.beginY;
+    const { beginX, beginY } = state;
     ctx.clearRect(0, 0, 800, 400);
     state.imageData && ctx.putImageData(state.imageData, 0, 0, 0, 0, 800, 400);
     ctx.beginPath();
@@ -146,8 +192,7 @@
     ctx.closePath();
   };
   const arcFn = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
-    const beginX = state.beginX;
-    const beginY = state.beginY;
+    const { beginX, beginY } = state;
     state.isDraw && ctx.clearRect(0, 0, 800, 400);
     state.imageData && ctx.putImageData(state.imageData, 0, 0, 0, 0, 800, 400);
     ctx.beginPath();
