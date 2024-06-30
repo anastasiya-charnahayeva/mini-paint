@@ -126,9 +126,10 @@
     state.type = type;
   };
   const canvasDown = (e: MouseEvent) => {
+    const { left, top } = e.target.getBoundingClientRect();
     state.isDraw = true;
-    state.beginX = e.pageX - canvas.offsetLeft;
-    state.beginY = e.pageY - canvas.offsetTop;
+    state.beginX = e.pageX - left;
+    state.beginY = e.pageY - top;
   };
 
   const canvasMove = (e: MouseEvent) => {
