@@ -7,7 +7,9 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
+import { fbAuth } from "../../firebase/index";
 
 export const useAuthStore = defineStore(
   "auth",
@@ -49,12 +51,19 @@ export const useAuthStore = defineStore(
       user.value = currentUser;
     }
 
+    function stateUpdate() {
+      onAuthStateChanged(fbAuth, (currentUser) => {
+        setCurrentUser(currentUser);
+      });
+    }
+
     return {
       user,
       createUser,
       signInUser,
       signOutUser,
       setCurrentUser,
+      stateUpdate,
     };
   },
   {
