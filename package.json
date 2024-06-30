@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "firebase": "^10.12.2",
-    "lint-staged": "^15.2.5",
     "pinia": "^2.1.7",
     "vca-firebase": "^0.2.0",
     "vue": "^3.4.21",
@@ -37,6 +36,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.10.0",
     "husky": "^8.0.3",
+    "lint-staged": "^15.2.7",
     "postcss": "^8.4.38",
     "prettier": "^2.3.0",
     "tailwindcss": "^3.4.3",

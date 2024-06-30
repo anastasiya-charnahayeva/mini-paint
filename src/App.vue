@@ -1,10 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
-    <Header v-if="user"></Header>
-    <RouterView />
-  </div>
+  <Header v-if="user"></Header>
+  <RouterView />
 </template>
 
 <script setup lang="ts">
