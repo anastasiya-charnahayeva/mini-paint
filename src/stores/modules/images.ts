@@ -4,9 +4,21 @@ import { useAuthStore } from "./useAuth";
 import { store } from "../../firebase/index";
 import { addDoc, getDocs, collection } from "firebase/firestore";
 
+interface ImgData {
+  email: string;
+  uid: string;
+  url: string;
+  userId: string;
+}
+
+interface Owner {
+  email: string;
+  userId: string;
+}
+
 export const useImagesStore = defineStore("images", () => {
-  const allImgs = ref([]);
-  const imgsOwners = ref([]);
+  const allImgs = ref<ImgData[]>([]);
+  const imgsOwners = ref<Array<Owner>>([]);
   const chosenUser = ref("");
 
   const authStore = useAuthStore();

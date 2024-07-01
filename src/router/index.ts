@@ -55,7 +55,7 @@ const user = () => {
   });
 };
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
   const res = await user();
   const allowedPaths = ["/login", "/register"];
   if (to.matched.some((route) => route.meta.isAuth)) {

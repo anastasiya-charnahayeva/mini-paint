@@ -3,7 +3,6 @@ import { ref } from "vue";
 import {
   createUserWithEmailAndPassword,
   getAuth,
-  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
@@ -31,20 +30,15 @@ export const useAuthStore = defineStore("auth", () => {
       values.password,
     );
     user.value = userCredential.user;
-
-    localStorage.setItem("token", userCredential.user?.accessToken);
-    localStorage.setItem("uid", userCredential.user?.uid);
   }
 
   async function signOutUser() {
     const auth = getAuth();
     await signOut(auth);
     user.value = null;
-    localStorage.removeItem("token");
-    localStorage.removeItem("uid");
   }
 
-  async function setCurrentUser(currentUser) {
+  async function setCurrentUser(currentUser: unknown) {
     user.value = currentUser;
   }
 
