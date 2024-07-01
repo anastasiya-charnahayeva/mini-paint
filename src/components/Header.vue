@@ -17,7 +17,6 @@
 <script setup lang="ts">
   import { useAuthStore } from "../stores/modules/useAuth";
   import { useRouter } from "vue-router";
-  import { ref } from "vue";
   const { signOutUser } = useAuthStore();
   const router = useRouter();
 

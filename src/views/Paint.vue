@@ -87,7 +87,6 @@
 
 <script lang="ts" setup>
   import { onMounted, reactive } from "vue";
-  import { store } from "../firebase/index";
   import { useImagesStore } from "../stores/modules/images";
 
   interface IState {
@@ -126,9 +125,10 @@
     state.type = type;
   };
   const canvasDown = (e: MouseEvent) => {
+    const { left, top } = e.target.getBoundingClientRect();
     state.isDraw = true;
-    state.beginX = e.pageX - canvas.offsetLeft;
-    state.beginY = e.pageY - canvas.offsetTop;
+    state.beginX = e.pageX - left;
+    state.beginY = e.pageY - top;
   };
 
   const canvasMove = (e: MouseEvent) => {

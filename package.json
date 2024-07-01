@@ -10,7 +10,8 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false"
   },
   "lint-staged": {
     "*.{js,ts,vue}": [
@@ -19,7 +20,6 @@
   },
   "dependencies": {
     "firebase": "^10.12.2",
-    "lint-staged": "^15.2.5",
     "pinia": "^2.1.7",
     "vca-firebase": "^0.2.0",
     "vue": "^3.4.21",
@@ -37,9 +37,11 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.10.0",
     "husky": "^8.0.3",
+    "lint-staged": "^15.2.7",
     "postcss": "^8.4.38",
     "prettier": "^2.3.0",
     "tailwindcss": "^3.4.3",
+    "type-check": "^0.4.0",
     "typescript": "^4.3.2",
     "vite": "^2.3.4",
     "vue-tsc": "^0.0.24"
