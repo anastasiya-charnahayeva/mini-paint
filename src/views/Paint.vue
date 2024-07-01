@@ -87,7 +87,6 @@
 
 <script lang="ts" setup>
   import { onMounted, reactive } from "vue";
-  import { store } from "../firebase/index";
   import { useImagesStore } from "../stores/modules/images";
 
   interface IState {

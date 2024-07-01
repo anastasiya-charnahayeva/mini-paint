@@ -12,7 +12,7 @@
   import Header from "./components/Header.vue";
 
   const authStore = useAuthStore();
-  const { setCurrentUser, stateUpdate } = authStore;
+  const { stateUpdate } = authStore;
   const { user } = storeToRefs(authStore);
 
   onMounted(() => {

@@ -40,8 +40,7 @@
 
 <script lang="ts" setup>
   import { storeToRefs } from "pinia";
-  import { onMounted, watch, ref } from "vue";
-  import { store } from "../firebase/index";
+  import { onMounted, ref } from "vue";
   import { useImagesStore } from "../stores/modules/images";
 
   const imagesStore = useImagesStore();
