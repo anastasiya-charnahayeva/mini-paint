@@ -125,7 +125,8 @@
     state.type = type;
   };
   const canvasDown = (e: MouseEvent) => {
-    const { left, top } = e.target.getBoundingClientRect();
+    const element = e.target as HTMLElement;
+    const { left, top } = element?.getBoundingClientRect();
     state.isDraw = true;
     state.beginX = e.pageX - left;
     state.beginY = e.pageY - top;
@@ -166,7 +167,6 @@
 
   const lineDrawing = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
     ctx.beginPath();
-    ctx.linejoin = "round";
     ctx.lineCap = "round";
     ctx.strokeStyle = state.color;
     ctx.moveTo(state.beginX, state.beginY);

@@ -44,7 +44,6 @@
   import { useImagesStore } from "../stores/modules/images";
 
   const imagesStore = useImagesStore();
-  const { chosenUser, imgsOwners } = storeToRefs(imagesStore);
   const { getImg, getImages } = imagesStore;
 
   const images = ref(getImg());
