@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useAuthStore } from "./useAuth";
 import { store } from "../../firebase/index";
+import type { DocumentData } from "firebase/firestore";
 import { addDoc, getDocs, collection } from "firebase/firestore";
 
 interface ImgData {
@@ -39,7 +40,7 @@ export const useImagesStore = defineStore("images", () => {
 
   async function getImages() {
     const querySnapshot = await getDocs(collection(store, "images"));
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach((doc: DocumentData) => {
       allImgs.value.push(doc.data());
     });
     updateOwners();
